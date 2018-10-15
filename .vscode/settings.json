@@ -1,0 +1,7 @@
+{
+    "html.format.enable": false,
+    "beautify.options": {
+        "elector-separator-newline": true
+    },
+    "less.lint.unknownProperties": "ignore",
+}

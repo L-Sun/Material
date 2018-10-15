@@ -1,0 +1,24 @@
+{{!< default}}
+{{! The tag above means - insert everything in this file into the {body} of the default.hbs template }}
+
+{{! If we have a tag cover, display that - else blog cover - else nothing }}
+
+<header class="main-header tag-header">
+        <section class="header-background"{{#if tag.feature_image}} style="background-image: url({{tag.feature_image}}){{else}}no-cover{{/if}}"></section>
+        <section id="title" class="page-title">{{tag.name}}</section>
+        {{#if tag.description}}
+            <h2 class="tag-description">
+            {{tag.description}}
+            </h2>
+		{{/if}}
+        
+
+</header>
+
+{{! The main content area on the homepage }}
+<main class="content P-animated" role="main">
+
+    {{! The tag below includes the post loop - partials/loop.hbs }}
+    {{> "loop"}}
+
+</main>

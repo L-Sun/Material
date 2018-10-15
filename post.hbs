@@ -1,0 +1,56 @@
+{{!< default}}
+
+{{! The comment above "< default" means - insert everything in this file into
+    the {body} of the default.hbs template, which contains our header/footer. }}
+
+{{! Everything inside the #post tags pulls data from the post }}
+{{#post}}
+
+<header class="main-header post-head">
+        <section class="header-background"{{#if feature_image}} style="background-image: url({{img_url feature_image}}){{else}}no-cover{{/if}}"></section>
+        <section id="title" class="post-title">{{title}}</section>
+        <section id="date" class="post-date"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="DD / MM / YYYY"}}</time></section>
+</header>
+<main id="content" class="content P-animated" role="main">
+    <article class="{{post_class}} post-article">
+
+        <section class="post-content">
+            {{content}}
+
+        </section>
+<br><hr><br>
+        <footer class="post-footer">
+
+        {{! Everything inside the #author tags pulls data from the author }}
+        
+            <section class="post-meta">
+            <section>
+                <span class="border"></span>
+                {{#foreach authors}}
+                    <a href="{{url}}" class="author-image">
+                    <figure><img src="{{img_url profile_image}}" alt="{{name}}"><span>{{name}}</span></figure>
+                    </a>
+                {{/foreach}}
+            </section>
+
+            {{#if tags}}
+            <section>
+                <span class="border"></span>
+                <ul>
+                    <i class="material-icons">label</i>
+                    {{#foreach tags}}
+                    <li><a href="{{url}}" title="{{name}}" class="tag-{{id}}">{{name}}</a></li>  
+                    {{/foreach}}
+                </ul>
+            </section>
+            {{/if}}
+            </section>
+
+        
+
+        </footer>
+
+    </article>
+</main>
+
+{{/post}}
