@@ -1,0 +1,29 @@
+<div class="card mdc-card mdc-image-list__item">
+    <a href="{{url}}" class="mdc-card__primary-action" data-postid="{{id}}">
+        {{#if feature_image}}
+        <div class="card_photo mdc-card__media mdc-card__media--16-9" style="background-image: url({{img_url feature_image}})"></div>
+        {{/if}}
+        <div class="card__primary">
+            <h2 class="card__title mdc-typography--headline6">{{title}}</h2>
+            <h3 class="card__subtitle mdc-typography--subtitle2">
+                {{date format="DD.MMMM.YYYY"}}
+            </h3>
+        </div>
+        <div class="card__secondary mdc-typography--body2">
+            {{excerpt characters="130"}}...
+        </div>
+    </a>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a href="{{url}}" class="mdc-button mdc-card__action mdc-card__action--button">
+                Read
+            </a>
+        </div>
+        {{!-- <div class="mdc-card__action-icons">
+            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon">
+                share
+            </button>
+        </div> --}}
+    </div>
+</div>
+

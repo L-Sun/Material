@@ -1,253 +1,145 @@
+/* ================== */
+// Config Area
+/* ================== */
+let icon_config = {
+	tag: 'label',
+	about: 'person',
+	author: 'person',
+	lab: 'school'
+}
 
-(function ($, undefined) {
-	$(function() {
-// Test area
+
+document.addEventListener('DOMContentLoaded', () => {
+	// Test area
 
 
 
-// Prism.highlightAll();
+	// replace icon
+	{
+		document.querySelectorAll('.material-icons').forEach(el => {
+			const key = el.textContent
+			if (key in icon_config) el.textContent = icon_config[key]
+		})
+	}
 
-
-
-	/*=============================*/
-	// 	pjax
-	/*=============================*/
-	var PostListSetting = {
-		gap: 20,
-		childWidth: $(".post-card").width(),
-		gridWidth: [0,350,700],
-		refresh: 700,
-	};
-	$(document).pjax('a', '.site-wrapper',{fragment: '.site-wrapper', timeout: 10000});
-	$(document).on({
-		'pjax:click': function() {
-			$(".content").removeClass('P-show').addClass('P-hide');
-			NProgress.start();
-		},
-		'pjax:success': function() {
-			$("#post-list").is(function() {
-				// If the current page has not the element with the class, 
-				// post-card, the value will be null.
-				PostListSetting.childWidth = $(".post-card").width();
-				$(this).waterfall(PostListSetting);
-			});
-			$(".ripple").on("animationend", function () {
-				$("body").toggleClass('nav-opened');
-				$("#in-nav").toggleClass('in-nav-closed in-nav-opened');
-			});
-		},
-		'pjax:end': function(){
-			$('.current-title span').html($('title').html());
-			$(".post-content img").attr('data-action', 'zoom');
-			$(".content").removeClass('P-hide').addClass('P-show');
-			$(".img-box").collagePlus();
-			$(".post-content code").addClass("language-" + $(".post-content span").first().text());
-			Prism.highlightAll();
-			NProgress.done();
+	// To top & Head Bar & Ribbon & Footer
+	{
+		const to_top = document.querySelector('#to-top')
+		const head_bar = document.querySelector('#head-bar')
+		to_top.addEventListener('click', () => {
+			window.scroll({
+				top: 0,
+				left: 0,
+				behavior: 'smooth'
+			})
+		})
+		window.onscroll = () => {
+			if (this.scrollY > 200) {
+				head_bar.classList.add('head-bar-scrolled')
+				to_top.classList.add('to-top-show')
+			}
+			else {
+				head_bar.classList.remove('head-bar-scrolled')
+				to_top.classList.remove('to-top-show')
+			}
 		}
-	})
+		const cpr_year = document.querySelector('.copyright-year')
+		const now = new Date()
+		cpr_year.innerText = cpr_year.innerText.slice(0, 5) + now.getFullYear() + cpr_year.innerText.slice(5, cpr_year.innerText.length)
+	}
+
+	// Ripple
+	{
+		let ripple_el = document.querySelectorAll('.mdc-ripple-surface')
+		ripple_el.forEach(el => {
+			window.mdc.ripple.MDCRipple.attachTo(el)
+		})
+	}
+
+	// Sort card
+	if (document.querySelector('.waterfall')) {
+		let waterfall = document.querySelector('.waterfall')
+		let column = getComputedStyle(waterfall).columnCount
+		let cards = [...waterfall.children]
+		let size = cards.length
+		let new_cards = Array(cards.length)
+		let get_pos = (x, sz, col) => {
+			const r = Math.floor(x / col)
+			const c = x % col
+			const c_x = Math.floor(sz / col)
+			const c_y = sz % col
+			if (c < c_y) return c * c_x + c + r
+			else return c * c_x + c_y + r
+		}
+		for (let i = 0; i < size; i++) {
+			const pos = get_pos(i, cards.length, column)
+			new_cards[pos] = i
+		}
+		new_cards.reverse()
+		new_cards.forEach(i => {
+			waterfall.insertBefore(cards[i], waterfall.firstChild)
+		})
+	}
 
 
-	/*===========================*/
-	// 	Search Engine
-	/*===========================*/
-	$("#search-input").ghostHunter({
-		results           : "#post-list",
-		before            : function() {
-		$(".content").removeClass('P-show').addClass('P-hide');
-		NProgress.start();
-		},
-		onComplete        : function() {
-		$(".content").removeClass('P-hide').addClass('P-show');
-		$("#post-list").waterfall(PostListSetting);
-		$(".pagination, #date").remove();
-		$("#title").html("Number of posts found: " +  $("#post-list").children().length);
-		NProgress.done();
-		},
-		displaySearchInfo : false,
-		result_template   : 
-		'<article class="post post-card">' +
-			'<header class="post-header no-cover" style="background-image: url({{image}})">' +
-				'<h2 class="post-title"><a href="{{url}}" data-postid="{{id}}">{{title}}</a></h2>' +
-			'</header>' +
-			'<section class="post-excerpt">' +
-				'<p>{{excerpt}}</p>' +
-			'</section>' +
-			'<hr>' +
-			'<footer class="post-meta">' +
-				'{{tag}}' +
-				'<time class="post-date" datetime={{pubDate}}>{{pubDate}}</time>' +
-			'</footer>' +
-		'</article>'
-	
-	});
-	/*=============================*/
-	// Replace Icon Function
-	/*=============================*/
-	var iconReplace = {
-		mode_1: function() {
-			for(Name in iconConfig_1){
-				var e = $("i:contains("+ Name.toLowerCase() +")");
-				if(iconConfig_1[Name].name){
-					e.html(iconConfig_1[Name].name);
-				}
-				if(iconConfig_1[Name].color){
-					e.css('color', iconConfig_1[Name].color);
-				}
-			}
-		},
-		mode_2: function() {
-			for(Name in iconConfig_2){
-				var e = $("i:contains("+ Name.toLowerCase() +")");
-				var w = e.innerWidth(),
-					h = e.innerHeight();
-				if(iconConfig_2[Name].name){
-					e.html('<img src='+ iconConfig_2[Name].name +'"');
-					e.css({
-						display: 'block',
-						width: w,
-						height: h
-					});
-				}
-				if(iconConfig_2[Name].color){
-					e.children('img').css('color', iconConfig_2[Name].color);
-				}
-			}
+	// Drawer
+	{
+		const menu = document.querySelector('#menu-button')
+		const nav = document.querySelector('.mdc-drawer')
+		const listEl = document.querySelector('.mdc-drawer .mdc-list')
+		menu.addEventListener('click', () => {
+			nav.MDCDrawer.open = true
+		})
+		listEl.addEventListener('click', () => {
+			nav.MDCDrawer.open = false
+		})
+
+		// fix tag current help
+		const tag_list = document.querySelectorAll('.drawer-tag')
+		tag_list.forEach((el) => {
+			if (el.getAttribute('href') === window.location.href)
+				el.classList.add('mdc-list-item--activated')
+		})
+
+		// Fix situation where no elements are activated
+		const activated = document.querySelectorAll('.mdc-list-item--activated')
+		if (!activated.length) {
+			listEl.firstElementChild.classList.add('mdc-list-item--activated')
 		}
 	}
-	
-	if(iconReplaceSwitch.mode_1) iconReplace.mode_1();
-	if(iconReplaceSwitch.mode_2) iconReplace.mode_2();
-		
+
+	// Article
+	{
+		const article = document.querySelector('.post-article-content')
+		const add_class = (els, name) => {
+			els.forEach(el => {
+				el.classList.add(name)
+			})
+		}
+		if (article) {
+			for (let i = 1; i < 5; i++) {
+				const h = article.querySelectorAll('h' + i)
+				h.forEach(el => {
+					el.classList.add('mdc-typography--headline' + i)
+				})
+			}
+			const p = article.querySelectorAll('p')
+			add_class(p, 'mdc-typography--body1')
+
+			const img = article.querySelectorAll('img')
+			add_class(img, 'img-zoomable')
+			const wide_figure = article.querySelectorAll('.kg-width-wide, .kg-width-full')
+			add_class(wide_figure, 'mdc-elevation--z4')
+
+		}
+
+	}
+
 	/*=============================*/
 	// HighLight Function
 	/*=============================*/
-	$(".post-content code").addClass("language-" + $(".post-content span").first().text());
-		
-	// Post-listd
-		$("#post-list").is(function() {
-			$(this).waterfall(PostListSetting);
 
-		})
-	/*Header*/
-		$(".menu-button, .nav-cover").click(function() {
-			$("body").toggleClass('nav-opened');
-			$("#in-nav").toggleClass('in-nav-closed in-nav-opened');
-		});
+	window.mdc.autoInit()
+})
 
-		//Ripple Effect
-		$("aside").find('li:not(.tag-title)').ripple();
-		$("aside").find('li:not(.tag-title)').on('animationend', function() {
-				$(".nav-current").removeClass('nav-current');
-				$(this).addClass('nav-current');
-		});
-		$(".button-icon").ripple();
-
-	
-		/*Menu icon*/
-		$("#search").click(function() {
-			$(this).addClass('search-opened');
-			event.stopPropagation();    //Stop the bubble
-		});
-		$(".site-wrapper").click(function() {
-			$("#search").removeClass('search-opened');
-		});
-	
-		// Bar-Effect
-		$(window).scroll(function() {
-			if($(this).scrollTop()>100){
-				$("#head-bar").addClass('head-bar-scrolled');
-				$("#to-top").fadeIn("400", function() {
-					$(this).css('transition', '.3s'); //hover effect
-				});
-			}else{
-				$("#head-bar").removeClass('head-bar-scrolled');
-				$("#to-top").fadeOut("400", function() {
-					$(this).css('transition', '0s');
-					$(this).children('span').remove();
-				});
-			}
-		});
-		//Scroll Effec
-		$("#to-top").scrollEffect(600);
-
-		// Header-image
-		$(window).scroll(function() {   
-			i = $(this).scrollTop()*0.6;
-			$(".header-background").css('transform', 'translate3d(0,' + i + 'px,0)');
-		});
-
-/*Post*/
-		$(".img-box").collagePlus();
-		$(window).resize(function() {
-			$(".img-box").collagePlus();
-		});	
-		$(".post-content img").attr('data-action', 'zoom');
-	})
-	
-
-/*Ripple Effect*/
-	$.fn.ripple = function () {
-
-		$(this).click(function(e) {
-			/*Make ripple*/
-	
-			//current style
-
-			// Remove the old one
-			$(".ripple").remove();
-
-
-			//Setup
-			var 
-				elementY = $(this).offset().top,
-				elementX = $(this).offset().left,
-				elementWidth = $(this).outerWidth(),
-				elementHeight = $(this).outerHeight();
-	
-			// Add the ripple element
-			$(this).prepend("<span class='ripple'></span>");
-	
-			// Make it round
-			if(elementWidth >= elementHeight){
-				elementHeight = elementWidth;
-			}else{
-				elementWidth = elementHeight;
-			}
-	
-			// Move the center of the element to the mouse
-			var x = e.pageX - elementX - (elementWidth)/2,
-				y = e.pageY - elementY - (elementHeight)/2;
-	
-			// Add the ripple CSS and start the animation
-			$(".ripple").css({
-				width  : elementWidth,
-				height : elementHeight,
-				top    : y + "px",
-				left   : x + "px"
-			}).addClass('rippleEffect');
-		});
-	}
-	/*Scroll Effect*/
-	$.fn.scrollEffect = function (x) {
-		speed = {
-			speed : x
-		};
-		default_options = {
-			speed : 400
-		};
-		option = $.extend(default_options, speed);
-
-		$(this).click(function (event) {
-			event.preventDefault();
-			if($(this).attr('href')){
-				$("html, body").animate({scrollTop : $(this.hash).offset().top}, option);
-				//hash is a property that can be found on elements that contain an href attribute/property.
-			}else{
-				$("html, body").animate({scrollTop : 0}, option.speed);
-			}
-		})
-		
-	}
-})(jQuery);
 

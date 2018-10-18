@@ -1,37 +1,28 @@
-<aside>
-<div id="in-nav" class="in-nav-closed">
-    <header style="background-image:url({{asset "images/navcover.jpg"}})">
+<aside class="drawer mdc-drawer mdc-drawer--modal" data-mdc-auto-init="MDCDrawer">
+    <div class="drawer-header mdc-drawer__header" style="background-image:url({{asset "images/navcover.jpg"}})">
         {{!-- 信息 --}}
-        <a href="{{@blog.url}}">
-            <img id="logo" src="{{@blog.logo}}" alt="{{@blog.title}}" id="logo">
-            <span id="name">{{@blog.title}}</span>
-        </a>
-        <address>
-            <a id="email" href="mailto:zover.v@gmail.com">zover.v@gmail.com</a>
-        </address>
-    </header>
-    <ul>
+        <img id="logo" src="{{@blog.logo}}" alt="{{@blog.title}}" id="logo">
+        <h3 class="mdc-drawer__title">{{@blog.title}}</h3>
+        <h6 class="mdc-drawer__subtitle">zover.v@gmail.com</h6>
+    </div>
+    <nav class="mdc-list" data-mdc-auto-init="MDCList">
         {{!-- 菜单输出 --}}
         {{#foreach navigation}}
-            <li class="nav nav-{{slug}} {{#if current}}nav-current{{/if}}"><a href="{{url absolute="true"}}"><i class="material-icons">{{slug}}</i><span>{{label}}</span></a></li>
+        <a class="mdc-list-item {{#if current}}mdc-list-item--activated{{/if}} mdc-ripple-surface" href="{{url absolute="true"}}">
+            <i class="material-icons mdc-list-item__graphic">{{slug}}</i>
+            {{label}}
+        </a>
         {{/foreach}}
-        <hr>
-        <li class="nav tag-title">
-            <i class="material-icons">label</i>
-            <spna>Tags</spna>
-        </li>
-    {{#get "tags" limit="all" include="count.posts"}}
-        <ul id="tag-nav">
+        <hr class="mdc-list-divider">
+        <h6 class="mdc-list-group__subheader">Labels</h6>
+        {{#get "tags" limit="all" include="count.posts"}}
         {{#foreach tags}}
-            <li class="">
-                <a href="{{url}}">
-                    <i class="material-icons">label_outline</i><span>{{name}}</span>
-                </a>
-            </li>
+        <a class="drawer-tag mdc-list-item mdc-ripple-surface" href="{{url absolute="true"}}">
+            <i class="material-icons mdc-list-item__graphic">bookmark</i>
+            {{name}}
+        </a>
         {{/foreach}}
-        </ul>
-    {{/get}}
-    </ul>
-</div>
+        {{/get}}
+    </nav>
 </aside>
-<span class="nav-cover"></span>
+<div class="mdc-drawer-scrim"></div>

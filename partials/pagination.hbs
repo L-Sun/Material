@@ -1,13 +1,15 @@
 <nav class="pagination" role="navigation">
     {{#if prev}}
-    <a class="newer-posts" href="{{page_url prev}}">
-        <i class="material-icons button-icon">navigate_before</i>
-    </a>
+    <a class="mdc-icon-button material-icons mdc-ripple-surface" href="{{page_url prev}}">navigate_before</a>
+    {{else}}
+    <button class="mdc-icon-button" disabled></button>
     {{/if}}
-    <span class="page-number">{{page}} of {{pages}}</span>
+    <div class="page-number">
+        <span>{{page}}</span> / {{pages}}
+    </div>
     {{#if next}}
-    <a class="older-posts" href="{{page_url next}}">
-        <i class="material-icons button-icon">navigate_next</i>
-    </a>
+    <a class="mdc-icon-button material-icons mdc-ripple-surface" href="{{page_url next}}">navigate_next</a>
+    {{else}}
+    <button class="mdc-icon-button" disabled></button>
     {{/if}}
 </nav>

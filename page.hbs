@@ -1,29 +1,49 @@
 {{!< default}}
-    {{! This is a page template. A page outputs content just like any other post, and has all the same
-    attributes by default, but you can also customise it to behave differently if you prefer. }}
-    {{! Everything inside the #post tags pulls data from the page }} 
-    {{#post}} 
-<header class="main-header post-head {{#if feature_image}}"
-    style="background-image: url({{img_url feature_image}}){{else}}no-cover{{/if}}">
-    <nav class="main-nav {{#if feature_image}}overlay{{/if}} clearfix">
-        {{#if @blog.logo}}<a class="blog-logo" href="{{@blog.url}}"><img src="{{@blog.logo}}" alt="{{@blog.title}}" /></a>{{/if}}
-        {{#if @blog.navigation}}
-        <a class="menu-button icon-menu" href="#"><span class="word">菜单</span></a>
-        {{/if}}
-    </nav>
-    </header>
+{{#post}}
+<div class="ribbon" >
+    <section class="ribbon-bg" style="background-image: {{#if feature_image}}url({{img_url feature_image}}){{else}}none{{/if}}"></section>
+    <h2 class="mdc-typography--headline2">{{title}}</h2>
+    <time class="mdc-typography--headline6" datetime="{{date format='YYYY-MM-DD'}}">
+        {{date format="DD MMMM YYYY"}}
+    </time> 
+</div>
 
-    <main class="content P-animated" role="main">
-        <article class="{{post_class}}">
-
-            <header class="post-header">
-                <h1 class="post-title">{{title}}</h1>
-            </header>
-
-            <section class="post-content">
-                {{content}}
+<main class="main-content" role="main">
+    <article class="{{post_class}} post-article mdc-elevation--z4">
+        <section class="post-article-content">
+            {{content}}
+        </section>
+        <hr>
+        <section class="post-info">
+            <section class="post-authors">
+                <span class="border"></span>
+                {{#foreach authors}}
+                    <div class="post-author">
+                        <a href="{{url}}" class="post-author-logo mdc-ripple-surface">
+                            <img src="{{img_url profile_image}}" alt="{{name}}">
+                        </a>
+                        <div class="post-author__info">
+                            <h3 class="post-author__name">{{name}}</h3>
+                            <h6 class="post-author__bio">{{bio}}<h6/>
+                        </div>
+                    </div>
+                {{/foreach}}
             </section>
 
-        </article>
-    </main>
-    {{/post}}
+            {{#if tags}}
+            <section class="post-tags">
+                <span class="border"></span>
+                {{#foreach tags}}
+                <a href="{{url absolute="true"}}" class="post-tag mdc-button mdc-button--dense">
+                    <i class="material-icons mdc-button__icon">bookmark</i>
+                    {{name}}
+                </a>
+                {{/foreach}}
+            </section>
+            {{/if}}
+        </section>
+
+    </article>
+</main>
+
+{{/post}}

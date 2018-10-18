@@ -12,72 +12,70 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="google-site-verification" content="2D_cCWij73EqUKInqVNFale2NZas8CS4KgWBVdkBG8s" />
-
-    <link rel="shortcut icon" href="{{asset "favicon.ico"}}">
+    {{!-- 头部钩子 --}}
+    {{ghost_head}}
 
     {{!-- 样式表 --}}
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-    <link rel="stylesheet" href="{{asset "css/screen.css"}}" />
-    <link rel="stylesheet" href="{{asset "css/material-icons.css"}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset "css/prism.css"}}">
-    <link rel="stylesheet" href="{{asset "css/zoom.css"}}">
-    <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-    {{!-- 头部钩子 --}}
-    {{ghost_head}}
+    <link rel="stylesheet" href="{{asset "css/screen.css"}}" />
+    
 </head>
 
-<body class="{{body_class}} nav-closed">
+<body class="{{body_class}} mdc-typography">
 
     {{navigation}}
     {{!-- Head-bar --}}
-    <div class="mdc-top-app-bar">
+    <header id="head-bar" class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <button class="menu-button material-icons mdc-top-app-bar__navigation-icon">menu</button>
-                <span class="mdc-top-app-bar__title">{{meta_title}}</span>
+                <button id="menu-button" class="material-icons mdc-top-app-bar__navigation-icon mdc-ripple-surface">menu</button>
+                <span class="head-bar-title mdc-top-app-bar__title">
+                    <a href="{{@blog.url}}">{{@blog.title}}&ensp;</a>
+                    {{^is "index"}}/&ensp;{{meta_title}}{{/is}}
+                </span>
             </section>
-            <section id="search" class="mdc-top-bar__section mdc-top-app-bar__section--align-end">
-                <button class="material-icons material-icons mdc-top-app-bar__action-item">search</button>
-                <form action="">
-                    <input id="search-input" type="text" name="blog-search" placeholder="Search...">
-                </form>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <a href="{{@blog.url}}/ghost" class="material-icons material-icons mdc-top-app-bar__action-item mdc-ripple-surface">create</a>
             </section>
         </div>
-    </div>
+    </header>
 
-    <div class="site-wrapper">
-        {{!-- 插入index.hbs or post.hbs--}}
-        {{{body}}}
-    </div>
-    <footer id="main-footer">
+    {{!-- 插入index.hbs or post.hbs--}}
+    {{{body}}}
+    {{^is "post, page"}}
+        {{pagination}}
+    {{/is}}
+	
+    <footer class="main-footer">
         <section class="copyright">
             <p>「Material」Coded by <a href="http://about.lawliet.pw" alt="关于我">{{@blog.title}}</a></p>
-            <p>2015-2016 <a href="{{@blog.url}}">Lawliet.pw</a> © All rights reserved.</p>
+            <p class="copyright-year">2015- Lawliet.pw © All rights reserved.</p>
         </section>
         <section class="powerdby">Powerd by <a href="http://ghost.org">Ghost</a></section>
     </footer>
-    <a id="to-top" class="button-icon"><i class="material-icons">keyboard_arrow_up</i></a>
-    {{!-- jQuery needs to come before `{{ghost_foot}}` so that jQuery can be used in code injection --}}
-    <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    {{! Ghost outputs important scripts and data with this tag }}
+
+    <button id="to-top" class="mdc-fab mdc-ripple-surface" aria-label="Top">
+        <span class="mdc-fab__icon material-icons">keyboard_arrow_up</span>
+    </button>
+
     {{ghost_foot}}
     {{!-- 外部Js --}}
     {{!-- CDN --}}
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <script src="//cdn.bootcss.com/zoom.js/0.0.1/zoom.min.js"></script>
-    <script src="//cdn.bootcss.com/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
-    <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-    <script src="//cdn.bootcss.com/collageplus/0.3.3/jquery.collagePlus.min.js"></script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-
-    <script src="{{asset "js/transition.js"}}"></script>
-    <script src="{{asset "js/jquery.waterfall.js"}}"></script>
-    <script src="{{asset "js/prism.js"}}"></script>
-    <script src="{{asset "js/ghostHunter.js"}}"></script>
     {{!-- 主index.js --}}
-    <script src="{{asset "js/config.js"}}"></script>
+    <script src="{{asset "js/zooming.min.js"}}"></script>
+    <script src="{{asset "js/prism.js"}}"></script>
     <script src="{{asset "js/index.js"}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            const zooming = new Zooming({
+				// options...
+			})
 
+			zooming.listen('.img-zoomable')
+        })
+    </script>
 </body>
-
 </html>
