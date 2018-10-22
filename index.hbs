@@ -1,5 +1,6 @@
 {{!< default}}
-<div class="ribbon"  style="background-image: {{#if @blog.cover_image}}url({{img_url @blog.cover_image}}){{else}}none{{/if}}">
+<div class="ribbon">
+    <section class="ribbon-bg" style="background-image: {{#if @blog.cover_image}}url({{img_url @blog.cover_image}}){{else}}none{{/if}}"></section>
     <h2 class="mdc-typography--headline2">{{@blog.title}}</h2>
 </div>
 <main class="main-content" role="main">

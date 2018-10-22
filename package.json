@@ -1,7 +1,7 @@
 {
   "name": "material",
   "description": "A theme that follows Material Desing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "ghost": ">=1.00"
   },
