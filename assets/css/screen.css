@@ -311,6 +311,7 @@ a {
   font-weight: 400;
   letter-spacing: .01786em;
   line-height: normal;
+  opacity: 0.5;
 }
 .post-article .post-info .post-tags {
   display: flex;
